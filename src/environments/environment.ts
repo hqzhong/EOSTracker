@@ -7,7 +7,7 @@ export const environment = {
   production: false,
   walletUrl: 'https://walleteos.com',
   votingUrl: 'https://eosportal.io',
-  appName: 'EOS Tracker',
+  appName: 'YAS Tracker',
   logoUrl: '/assets/logo.png',
   blockchainUrl: 'http://loveyas.vip:8888',
   chainId: 'EOS7oB3Ruwavbvja9SQpN58iK2zK8W737E6hvUwXUUj9iQ5a49Tff',
