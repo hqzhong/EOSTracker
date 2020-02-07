@@ -47,10 +47,10 @@ export class ProducerComponent implements OnInit {
         let percentageVotes = producer.total_votes / chainStatus.total_producer_vote_weight * 100;
         let percentageVotesRewarded = producer.total_votes / (chainStatus.total_producer_vote_weight - votesToRemove) * 100;
         if (position < 22) {
-          reward += 318;
+          reward += 33;
         }
-        reward += percentageVotesRewarded * 200;
-        if (percentageVotes * 200 < 100) {
+        reward += percentageVotesRewarded * 2055 / 100;
+        if (reward < 100) {
           reward = 0;
         }
         return {
@@ -59,7 +59,7 @@ export class ProducerComponent implements OnInit {
           position: position,
           reward: reward.toFixed(0),
           votes: percentageVotes.toFixed(2)
-        }
+        };
       }),
       switchMap(producer => {
         if (!producer.url) {
