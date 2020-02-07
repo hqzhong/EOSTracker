@@ -52,9 +52,9 @@ export class ProducersComponent implements OnInit {
               }
             } else {
               if (position < 22) {
-                reward += 318;
+                reward += 33;
               }
-              reward += percentageVotesRewarded * 200;
+              reward += percentageVotes * 2055 / 100;
               if (reward < 100) {
                 reward = 0;
               }
@@ -66,7 +66,7 @@ export class ProducersComponent implements OnInit {
               reward: reward.toFixed(0),
               votes: percentageVotes.toFixed(2),
               numVotes: (producer.total_votes / this.calculateVoteWeight() / 10000).toFixed(0)
-            }
+            };
           });
         })
       )),
