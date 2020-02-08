@@ -9,6 +9,7 @@ import {environment} from '../../../../environments/environment';
 export class PriceComponent implements OnInit {
 
   @Input() price: any;
+  @Input() stats: any;
   token = environment.token;
 
   constructor() { }

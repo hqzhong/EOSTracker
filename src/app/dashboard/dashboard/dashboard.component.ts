@@ -10,6 +10,7 @@ import {environment} from '../../../environments/environment';
 export class DashboardComponent implements OnInit {
 
   eosQuote$: Observable<boolean>;
+  eosStats$: Observable<boolean>;
   showAds = environment.showAds;
 
   constructor(
@@ -18,6 +19,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.eosQuote$ = this.appService.eosQuote$;
+    this.eosStats$ = this.appService.eosStats$;
   }
 
 }

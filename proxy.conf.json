@@ -1,0 +1,14 @@
+{
+  "/api/whaleex": {
+    "target": "https://w.whaleex.com.cn",
+    "secure": false,
+    "pathRewrite": {"/api/whaleex" : ""},
+    "logLevel": "debug"
+  },
+  "/api": {
+    "target": "http://45.77.40.115:8888",
+    "secure": false,
+    "pathRewrite": {"/api" : ""},
+    "logLevel": "debug"
+  }
+}

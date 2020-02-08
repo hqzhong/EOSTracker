@@ -4,6 +4,8 @@ import { EosService } from './eos.service';
 import { Observable, Subject, timer, from, forkJoin, of } from 'rxjs';
 import { map, filter, share, withLatestFrom, switchMap, catchError, take } from 'rxjs/operators';
 import {environment} from '../../environments/environment';
+import * as moment from 'moment';
+import _date = moment.unitOfTime._date;
 
 const EOS_QUOTE = 60000;
 const RAM_QUOTE = 60000;
@@ -19,6 +21,7 @@ export class AppService {
   latestBlockNumber$ = this.latestBlockNumberSource.asObservable();
   isMaintenance$: Observable<boolean>;
   eosQuote$: Observable<any>;
+  eosStats$: Observable<any>;
   ramQuote$: Observable<any>;
   info$: Observable<any>;
   latestBlock$: Observable<any>;
@@ -72,8 +75,15 @@ export class AppService {
     );
     this.eosQuote$ = timer(0, EOS_QUOTE).pipe(
       switchMap(() => this.getEOSTicker()),
-      filter(ticker => !!ticker.data),
-      map(ticker => ticker.data),
+      filter(ticker => !!ticker),
+      map(ticker => ticker),
+      share()
+    );
+    this.eosStats$ = timer(0, EOS_QUOTE).pipe(
+      switchMap(() => this.eosService.eos.getCurrencyStats({
+        code: "eosio.token",
+        symbol: "YAS"
+      })),
       share()
     );
     this.ramQuote$ = timer(0, RAM_QUOTE).pipe(

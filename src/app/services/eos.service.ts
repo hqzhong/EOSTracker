@@ -15,6 +15,8 @@ export class EosService {
   public apiEndpoint$ = this.apiEndpointSource.asObservable();
   public eos: any;
 
+  eosStats$: Observable<any>;
+
   constructor(
     private http: HttpClient,
     private logger: LoggerService
