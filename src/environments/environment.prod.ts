@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
   walletUrl: 'http://iyas.top',
-  votingUrl: 'http://iyas.top',
+  votingUrl: 'http://vote.yas100.com',
   appName: 'YAS Tracker',
   logoUrl: '/assets/logo.png',
   blockchainUrl: 'http://45.77.40.115:8888',

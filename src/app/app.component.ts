@@ -12,12 +12,12 @@ declare let ga: Function;
 })
 
 export class AppComponent {
-  title = 'EOS Tracker | EosTracker.io';
+  title = 'YAS Tracker | iyas.top';
   @LocalStorage()
   language: any;
 
   constructor(public router: Router, private translate: TranslateService) {
-    translate.setDefaultLang('en');
+    translate.setDefaultLang('zh');
     if (!this.language) {
       let browserLanguage = ((<any>window).navigator) ? ((<any>window).navigator.userLanguage || (<any>window).navigator.language) : 'en';
       this.language = browserLanguage.substring(0, 2);
