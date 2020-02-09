@@ -52,9 +52,9 @@ export class ProducersComponent implements OnInit {
               }
             } else {
               if (position < 22) {
-                reward += 59;
+                reward += 66;
               }
-              reward += percentageVotesRewarded * 3699 / 100;
+              reward += percentageVotesRewarded * 4110 / 100;
               if (reward < 100) {
                 reward = 0;
               }
