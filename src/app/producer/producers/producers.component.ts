@@ -4,6 +4,7 @@ import { EosService } from '../../services/eos.service';
 import { Observable, of, timer } from 'rxjs';
 import { map, share, switchMap } from 'rxjs/operators';
 import {environment} from '../../../environments/environment';
+import {google} from '@agm/core/services/google-maps-types';
 
 @Component({
   templateUrl: './producers.component.html',
@@ -14,6 +15,7 @@ export class ProducersComponent implements OnInit {
   columnHeaders$: Observable<string[]> = of(PRODUCERS_COLUMNS);
   producers$: Observable<any[]>;
   chainStatus$: Observable<any>;
+  global4$: Observable<any>;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -28,50 +30,51 @@ export class ProducersComponent implements OnInit {
       switchMap(() => this.eosService.getChainStatus()),
       share()
     );
-    this.producers$ = this.chainStatus$.pipe(
-      switchMap(chainStatus => this.eosService.getProducers().pipe(
-        map(producers => {
-          const votesToRemove = producers.reduce((acc, cur) => {
-            const percentageVotes = cur.total_votes / chainStatus.total_producer_vote_weight * 100;
-            if (percentageVotes * 200 < 100) {
-              acc += parseFloat(cur.total_votes);
-            }
-            return acc;
-          }, 0);
-          return producers.map((producer, index) => {
-            let position = parseInt(index) + 1;
-            let reward = 0;
-            let percentageVotes = producer.total_votes / chainStatus.total_producer_vote_weight * 100;
-            let percentageVotesRewarded = producer.total_votes / (chainStatus.total_producer_vote_weight - votesToRemove) * 100;
+    this.global4$ = this.eosService.getGlobal4().pipe(
+      share()
+    );
 
-            if (environment.token === 'TLOS') {
-              if (position < 22) {
-                reward = 900;
-              } else if (position < 52) {
-                reward = 400;
+    this.producers$ = this.chainStatus$.pipe(
+      switchMap(chainStatus => this.global4$.pipe(
+        switchMap(global4 => this.eosService.getProducers().pipe(
+          map(producers => {
+            const votesToRemove = producers.reduce((acc, cur) => {
+              const percentageVotes = cur.total_votes / chainStatus.total_producer_vote_weight * 100;
+              if (percentageVotes * 200 < 100 || cur.is_active === 0) {
+                acc += parseFloat(cur.total_votes);
               }
-            } else {
-              if (position < 22) {
-                reward += 66;
-              }
-              reward += percentageVotesRewarded * 4110 / 100;
+              return acc;
+            }, 0);
+
+            return producers.map((producer, index) => {
+              let supply = 99701647;
+              let bpay = supply * 10000 / (global4.votepay_factor * 21 * 365 * 100);
+              let vpay_total = supply * 10000 / (global4.inflation_pay_factor * 365 * 100);
+              let position = parseInt(index) + 1;
+              let reward = 0;
+              let percentageVotes = producer.total_votes / chainStatus.total_producer_vote_weight * 100;
+              let percentageVotesRewarded = producer.total_votes / (chainStatus.total_producer_vote_weight - votesToRemove) * 100;
+
+              reward += percentageVotesRewarded * vpay_total / 100;
               if (reward < 100) {
                 reward = 0;
               }
-            }
+              if (position < 22) {
+                reward += bpay;
+              }
 
-            return {
-              ...producer,
-              position: position,
-              reward: reward.toFixed(0),
-              votes: percentageVotes.toFixed(2),
-              numVotes: (producer.total_votes / this.calculateVoteWeight() / 10000).toFixed(0)
-            };
-          });
-        })
-      )),
-      share()
-    );
+              return {
+                ...producer,
+                position: position,
+                reward: reward.toFixed(0),
+                votes: percentageVotes.toFixed(2),
+                numVotes: (producer.total_votes / this.calculateVoteWeight() / 10000).toFixed(0)
+              };
+            });
+          })
+        )),
+        share()
+      )));
   }
 
   private calculateVoteWeight() {

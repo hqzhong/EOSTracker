@@ -160,4 +160,16 @@ export class EosService {
       map((result: any) => result.rows[0])
     );
   }
+
+  getGlobal4() {
+    return from(this.eos.getTableRows({
+      json: true,
+      code: "eosio",
+      scope: "eosio",
+      table: "global4",
+      limit: 1
+    })).pipe(
+      map((result: any) => result.rows[0])
+    );
+  }
 }

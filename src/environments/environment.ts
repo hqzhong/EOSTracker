@@ -9,7 +9,7 @@ export const environment = {
   votingUrl: 'https://eosportal.io',
   appName: 'YAS Tracker',
   logoUrl: '/assets/logo.png',
-  blockchainUrl: 'http://loveyas.vip:8888',
+  blockchainUrl: 'http://iyas.top:8888',
   chainId: 'EOS7oB3Ruwavbvja9SQpN58iK2zK8W737E6hvUwXUUj9iQ5a49Tff',
   showAds: false,
   tokensUrl: 'https://raw.githubusercontent.com/eoscafe/eos-airdrops/master/tokens.json',
